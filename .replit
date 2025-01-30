@@ -11,3 +11,4 @@ run = ["sh", "-c", "python main.py"]
 localPort = 8080
 externalPort = 80
 exposeLocalhost = true
+
