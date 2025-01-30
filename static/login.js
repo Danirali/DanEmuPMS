@@ -1,15 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("JavaScript Loaded!"); // Debugging
-
   document.getElementById("loginForm").addEventListener("submit", async function (event) {
-    event.preventDefault(); // Stop normal form submission
-    console.log("Login Form Submitted!"); // Debugging
+    event.preventDefault(); 
 
     const username = document.getElementById("username").value.trim();
     const password = document.getElementById("password").value.trim();
-
-    console.log("Username:", username); // Debugging
-    console.log("Password:", password); // Debugging
 
     const response = await fetch("/api/login", {
       method: "POST",
@@ -24,7 +18,9 @@ document.addEventListener("DOMContentLoaded", function () {
       window.location.href = "/dashboard"; // Redirect on success
     } else {
       console.log("Login failed:", data.error);
-      alert(data.error); // Show error message
+      alert("Incorrect username or password. Please try again.");
+      document.getElementById("login-error-msg-box").textContent = "Incorrect username or password. Please try again.";
+      document.getElementById("login-error-msg-box").style.padding = "1em";
     }
   });
 });

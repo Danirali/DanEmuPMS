@@ -13,13 +13,12 @@ with open('passwd/credentials.json', 'r') as users_file:
     users = json.load(users_file)
 
 
-# Decorator to protect routes
 def login_required(f):
 
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if 'user_id' not in session:
-            return redirect(url_for('login_ui'))  # Redirect to login page
+            return redirect(url_for('home_ui'))
         return f(*args, **kwargs)
 
     return decorated_function
@@ -35,6 +34,11 @@ def privacy_policy_ui():
     return render_template('privacy_policy.html')
 
 
+@app.route('/terms-of-service', methods=['GET'])
+def terms_policy_ui():
+    return render_template('terms.html')
+
+
 @app.route('/contact', methods=['GET'])
 def contact_page_ui():
     return render_template('contact.html')
@@ -45,9 +49,9 @@ def pricing_ui():
     return render_template('pricing.html')
 
 
-@app.route('/login', methods=['GET'])
-def login_ui():
-    return render_template('login.html')
+@app.route('/about', methods=['GET'])
+def about_ui():
+    return render_template('about.html')
 
 
 @app.route('/dashboard')
@@ -67,7 +71,7 @@ def login():
 
         if bcrypt.checkpw(password.encode('utf-8'),
                           stored_hashed_password.encode('utf-8')):
-            session['user_id'] = username  # Store user ID in session
+            session['user_id'] = username
             return jsonify({
                 "message": "Login successful",
                 "redirect": "/dashboard"
@@ -82,6 +86,14 @@ def login():
 def logout():
     session.pop('user_id', None)
     return redirect(url_for('home_ui'))
+
+
+@app.route('/api')
+def api_status():
+    return jsonify({
+        "API Status": "API is running",
+        "Endpoints": ["/api/login", "/api/dashboard", "/api/logout"]
+    }), 200
 
 
 app.run(debug=True, port=8080)

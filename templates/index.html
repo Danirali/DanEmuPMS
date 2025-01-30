@@ -19,7 +19,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
   </head>
-  <body style="font-family: 'Bebas Neue';">
+  <body class="font-primary">
+    
     <!-- Navigation Bar -->
     <header>
       <!-- Navbar - Sticky at the top -->
@@ -40,18 +41,18 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#"
+                <a class="nav-link active" aria-current="page" href="/"
                   >Features</a
                 >
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="pricing.html">Pricing</a>
+                <a class="nav-link" href="/pricing">Pricing</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="about.html">About</a>
+                <a class="nav-link" href="/about">About</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="support.html">Support</a>
+                <a class="nav-link" href="/contact">Support</a>
               </li>
               <li class="nav-item">
                 <button
@@ -69,7 +70,7 @@
 
       <!-- Login Modal -->
       <div
-        class="modal fade"
+        class="modal fade font-poppins"
         id="loginModal"
         tabindex="-1"
         aria-labelledby="loginModalLabel"
@@ -113,6 +114,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary w-100">Login</button>
+                <p style="font-weight: bold; margin-top: 1em;" id="login-error-msg-box" class="text-danger"></p>
               </form>
             </div>
           </div>
@@ -173,8 +175,8 @@
       <footer>
         <p>&copy; 2025 Vision. All rights reserved.</p>
         <div class="footer-links">
-          <a href="/privacy-policy">Privacy Policy</a> | <a href="tos.html">Terms of Service</a> |
-          <a href="contactus.html">Contact Us</a>
+          <a href="/privacy-policy">Privacy Policy</a> | <a href="/terms-of-service">Terms of Service</a> |
+          <a href="/contact">Contact Us</a>
         </div>
       </footer>
       <script src="{{ url_for('static', filename='login.js') }}"></script>
