@@ -21,6 +21,16 @@ def privacy_policy_ui():
     return render_template('privacy_policy.html')
 
 
+@app.route('/contact', methods=['GET'])
+def contact_page_ui():
+    return render_template('contact.html')
+
+
+@app.route('/pricing', methods=['GET'])
+def pricing_ui():
+    return render_template('pricing.html')
+
+
 @app.route('/login', methods=['GET'])
 def login_ui():
     return render_template('login.html')
