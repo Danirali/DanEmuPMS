@@ -14,11 +14,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const data = await response.json();
 
     if (response.ok) {
-      console.log("Login successful! Redirecting...");
       window.location.href = "/dashboard"; // Redirect on success
     } else {
       console.log("Login failed:", data.error);
-      alert("Incorrect username or password. Please try again.");
       document.getElementById("login-error-msg-box").textContent = "Incorrect username or password. Please try again.";
       document.getElementById("login-error-msg-box").style.padding = "1em";
     }
