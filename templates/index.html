@@ -19,7 +19,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
   </head>
-  <body style="">
+  <body style="font-family: 'Bebas Neue';">
     <!-- Navigation Bar -->
     <header>
       <!-- Navbar - Sticky at the top -->
@@ -87,7 +87,7 @@
               ></button>
             </div>
             <div class="modal-body">
-              <form action="/api/login" method="POST">
+              <form id="loginForm">
                 <!-- Username Input -->
                 <div class="mb-3">
                   <label for="username" class="form-label">Username</label>
@@ -173,10 +173,11 @@
       <footer>
         <p>&copy; 2025 Vision. All rights reserved.</p>
         <div class="footer-links">
-          <a href="pp.html">Privacy Policy</a> | <a href="tos.html">Terms of Service</a> |
+          <a href="/privacy-policy">Privacy Policy</a> | <a href="tos.html">Terms of Service</a> |
           <a href="contactus.html">Contact Us</a>
         </div>
       </footer>
+      <script src="{{ url_for('static', filename='login.js') }}"></script>
       <!-- Bootstrap JS (CDN) and Popper.js (required for Bootstrap's components) -->
       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
