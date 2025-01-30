@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Property</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            max-width: 400px;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            text-align: center;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #dc3545;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            width: 100%;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #c82333;
+        }
+        #message {
+            margin-top: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Delete Property</h2>
+
+    <form id="deletePropertyForm">
+        <label for="property_id">Enter Property ID to Delete:</label>
+        <input type="number" id="property_id" name="property_id" required>
+
+        <button type="submit">Delete Property</button>
+    </form>
+
+    <p id="message"></p>
+
+    <script>
+        document.getElementById("deletePropertyForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            let propertyId = document.getElementById("property_id").value;
+            let response = await fetch(`/api/remove_property/${propertyId}`, {
+                method: "DELETE"
+            });
+
+            let result = await response.json();
+            document.getElementById("message").textContent = result.message;
+
+            if (response.ok) {
+                document.getElementById("deletePropertyForm").reset();
+            }
+        });
+    </script>
+
+</body>
+</html>
