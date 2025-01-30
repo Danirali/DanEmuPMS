@@ -1,0 +1,172 @@
+.bebas-neue-regular {
+  font-family: "Bebas Neue", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+/* Global Styles */
+body {
+  font-family: 'Bebas-Neue' ;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f8f8;
+  color: #333;
+  margin-top: 70px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Header (Navbar) */
+header {
+  background-color: #0044cc;
+  padding: 15px 0;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.navbar .logo a {
+  font-size: 24px;
+  color: white;
+  font-weight: bold;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+}
+
+.nav-links li {
+  margin-left: 20px;
+}
+
+.nav-links a {
+  color: white;
+  font-weight: 500;
+  padding: 10px 15px;
+  transition: background-color 0.3s;
+}
+
+.nav-links a:hover {
+  background-color: #003366;
+  border-radius: 4px;
+}
+
+/* Hero Section */
+.hero {
+  background: url('https://via.placeholder.com/1500x800') no-repeat center
+    center/cover;
+  padding: 100px 20px;
+  text-align: center;
+  color: rgb(255, 0, 0);
+}
+
+.hero h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.hero p {
+  font-size: 20px;
+  margin-bottom: 30px;
+}
+
+.cta-buttons {
+  display: inline-block;
+}
+
+.cta-button {
+  padding: 15px 30px;
+  background-color: #0073e6;
+  color: white;
+  font-size: 18px;
+  border-radius: 4px;
+  margin-right: 15px;
+  transition: background-color 0.3s;
+}
+
+.cta-button:hover {
+  background-color: #005bb5;
+}
+
+.cta-button.secondary {
+  background-color: transparent;
+  border: 2px solid #0073e6;
+  color: #0073e6;
+}
+
+.cta-button.secondary:hover {
+  background-color: #0073e6;
+  color: white;
+}
+
+/* Features Section */
+.features {
+  display: flex;
+  justify-content: space-around;
+  padding: 60px 20px;
+  background-color: #fff;
+  text-align: center;
+}
+
+.feature-item {
+  margin: 0 20px;
+  width: 30%;
+}
+
+.feature-item h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.feature-item p {
+  font-size: 16px;
+}
+
+/* Testimonials Section */
+.testimonials {
+  background-color: #f1f1f1;
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.testimonials h2 {
+  font-size: 30px;
+  margin-bottom: 30px;
+}
+
+.testimonial-item {
+  font-size: 18px;
+  font-style: italic;
+  margin-bottom: 15px;
+}
+
+.testimonial-item strong {
+  display: block;
+  margin-top: 10px;
+}
+
+/* Footer */
+footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+.footer-links a {
+  color: white;
+  margin: 0 10px;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
