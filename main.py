@@ -45,6 +45,11 @@ def pricing_ui():
     return render_template('pricing.html')
 
 
+@app.route('/login', methods=['GET'])
+def login_ui():
+    return render_template('login.html')
+
+
 @app.route('/dashboard')
 @login_required  # Protect the dashboard route
 def dashboard():
