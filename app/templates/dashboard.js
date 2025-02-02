@@ -1,19 +1,42 @@
 document.addEventListener('DOMContentLoaded', async() => {
-    loadSection('propertiesNav')
+    loadSection('propertyNav')
+    document.getElementById("formMessage").textContent = '';
 })
 
-let propertyForm = document.getElementById('propertyForm');
-
 function loadSection(domain) {
-    let navOption = document.getElementById(domain);
-    let propertyNav = document.getElementById('propertyNavLabel');
-    let incomeNav = document.getElementById('incomeNavLabel');
-    let expensesNav = document.getElementById('expensesNavLabel');
+    navOption = document.getElementById(domain)
+    navOptionLabel = document.getElementById(domain + "Label")
 
-    propertyNav.setAttribute('class','flex-sm-fill text-sm-center nav-link')
-    incomeNav.setAttribute('class','flex-sm-fill text-sm-center nav-link')
-    expensesNav.setAttribute('class','flex-sm-fill text-sm-center nav-link')
+    navOptions = ['propertyNav','incomeNav','expensesNav']
 
-    navOption.setAttribute('class','flex-sm-fill text-sm-center nav-link active')
-    navOption.style.display = 'block';
+    navOptions.forEach(option => {
+        document.getElementById(option).style.display = 'none';
+        document.getElementById(option + "Label").classList.remove('active');
+    });
+
+    document.getElementById(domain).style.display = 'block';
+    document.getElementById(domain + "Label").classList.add('active');
 }
+
+document.getElementById("propertyForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    let name = document.getElementById("name").value;
+    let value = document.getElementById("value").value;
+    let unit = document.getElementById("unit").value;
+
+    let response = await fetch("/api/add_property", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name, value, unit })
+    });
+
+    let result = await response.json();
+    document.getElementById("formMessage").textContent = result.message;
+
+    if (response.ok) {
+        document.getElementById("propertyForm").reset();
+    }
+});

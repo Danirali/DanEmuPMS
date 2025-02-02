@@ -18,7 +18,7 @@
       <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
           <div class="container-fluid">
-            <a class="navbar-brand" href="#">Vision</a>
+            <a class="navbar-brand" href="/">NexEstate</a>
             <button
               class="navbar-toggler"
               type="button"
@@ -75,28 +75,28 @@
                 aria-label="Close"
               ></button>
             </div>
-            <div class="modal-body" onload="loadSection('propertiesNav')">
+            <div class="modal-body" onload="loadSection('propertyNav')">
               <nav class="nav nav-pills flex-column flex-sm-row">
-                <a class="flex-sm-fill text-sm-center nav-link active" id="propertyNavLabel" onclick="loadSection('propertiesNav')" href="#">Property</a>
+                <a class="flex-sm-fill text-sm-center nav-link active" id="propertyNavLabel" onclick="loadSection('propertyNav')" href="#">Property</a>
                 <a class="flex-sm-fill text-sm-center nav-link" id="incomeNavLabel" href="#" onclick="loadSection('incomeNav')">Income</a>
                 <a class="flex-sm-fill text-sm-center nav-link" id="expensesNavLabel" href="#" onclick="loadSection('expensesNav')">Expenses</a>
               </nav>
               <hr>
-              <div class="container" id="propertiesNav" style="display: none;">
+              <div class="container" id="propertyNav" style="display: none;">
                 <form id="propertyForm">
                   <div class="row m-2">
-                    <label class="form-label" for="name">Property Name:</label>
+                    <label class="form-label" for="name">Name:</label>
                     <input class="form-control" type="text" id="name" name="name" required>
                   </div>
                   <div class="row m-2">
-                    <label class="form-label" for="value">Property Value:</label>
+                    <label class="form-label" for="value">Value:</label>
                     <input class="form-control" type="number" id="value" name="value" required>
                   </div>
                   <div class="row m-2">
-                    <label class="form-label" for="unit">Property/Unit Type:</label>
+                    <label class="form-label" for="unit">Unit Type:</label>
                     <input class="form-control" type="text" id="unit" name="unit" required>
                   </div>
-                  <div class="row m-4">
+                  <div class="row m-2 mt-4">
                     <button class="btn btn-primary" type="submit">Add Property</button>
                   </div>
                 </form>
@@ -104,41 +104,90 @@
               <div class="container" id="incomeNav" style="display: none;">
                 <form id="incomeForm">
                   <div class="row m-2">
-                    <label class="form-label" for="name">Property Name:</label>
+                    <label class="form-label" for="name">Income Name:</label>
                     <input class="form-control" type="text" id="name" name="name" required>
                   </div>
                   <div class="row m-2">
-                    <label class="form-label" for="value">Property Value:</label>
-                    <input class="form-control" type="number" id="value" name="value" required>
+                    <label class="form-label" for="amount">Amount:</label>
+                    <input class="form-control" type="number" id="amount" name="amount" required>
                   </div>
                   <div class="row m-2">
-                    <label class="form-label" for="unit">Property/Unit Type:</label>
-                    <input class="form-control" type="text" id="unit" name="unit" required>
+                    <label class="form-label" for="date">Date:</label>
+                    <input class="form-control" type="date" id="date" name="date" required>
                   </div>
-                  <div class="row m-4">
-                    <button class="btn btn-primary" type="submit">Add Property</button>
+                  <div class="row m-2">
+                    <label class="form-label" for="property_id">Select Property:</label>
+                    <select class="form-select" id="property_id" name="property_id" required>
+                        <option value="">Loading properties...</option>
+                    </select>
+                  </div>
+                  <div class="row m-2">
+                    <div class="container-fluid">
+                      <div class="col-sm">
+                        <a class="btn btn-primary text-right" data-bs-toggle="collapse" href="#extra-info-collapse" role="button" aria-expanded="false" aria-controls="collapseExample">
+                          Extra Options
+                        </a>
+                      </div>
+                    </div>
+                    <div class="container-fluid">
+                      <div class="collapse m-4" id="extra-info-collapse">
+                        <label class="form-label" for="extra">Comments:</label>
+                        <input class="form-control" placeholder="Tenant Name/Additional Comments" type="text" id="extra" name="extra"></input>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row m-2 mt-4">
+                    <button class="btn btn-primary" type="submit">Add Income</button>
                   </div>
                 </form>
               </div>
               <div class="container" id="expensesNav" style="display: none;">
                 <form id="expensesForm">
                   <div class="row m-2">
-                    <label class="form-label" for="name">Property Name:</label>
+                    <label class="form-label" for="name">Name:</label>
                     <input class="form-control" type="text" id="name" name="name" required>
                   </div>
                   <div class="row m-2">
-                    <label class="form-label" for="value">Property Value:</label>
-                    <input class="form-control" type="number" id="value" name="value" required>
+                    <label class="form-label" for="amount">Amount:</label>
+                    <input class="form-control" type="number" id="amount" name="amount" required>
                   </div>
                   <div class="row m-2">
-                    <label class="form-label" for="unit">Property/Unit Type:</label>
-                    <input class="form-control" type="text" id="unit" name="unit" required>
+                    <label class="form-label" for="category">Category:</label>
+                    <select class="form-select" id="category" name="category" required>
+                        <option value="Maintenance">Maintenance</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Insurance">Insurance</option>
+                        <option value="Property Taxes">Property Taxes</option>
+                        <option value="Other">Other</option>
+                    </select>
                   </div>
-                  <div class="row m-4">
-                    <button class="btn btn-primary" type="submit">Add Property</button>
+                  <div class="row m-2">
+                    <label class="form-label" for="property_id">Select Property:</label>
+                    <select class="form-select" id="property_id" name="property_id" required>
+                        <option value="">Loading properties...</option>
+                    </select>
+                  </div>
+                  <div class="row m-2">
+                    <div class="container-fluid">
+                      <div class="col-sm">
+                        <a class="btn btn-primary text-right" data-bs-toggle="collapse" href="#extra-info-collapse" role="button" aria-expanded="false" aria-controls="collapseExample">
+                          Extra Options
+                        </a>
+                      </div>
+                    </div>
+                    <div class="container-fluid">
+                      <div class="collapse m-4" id="extra-info-collapse">
+                        <label class="form-label" for="extra">Comments:</label>
+                        <input class="form-control" placeholder="Tenant Name/Additional Comments" type="text" id="extra" name="extra"></input>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row m-2 mt-4">
+                    <button class="btn btn-primary" type="submit">Add Expense</button>
                   </div>
                 </form>
               </div>
+              <p id="formMessage"></p>
             </div>
           </div>
         </div>
