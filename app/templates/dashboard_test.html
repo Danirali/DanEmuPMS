@@ -1,0 +1,152 @@
+<!DOCTYPE HTML>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Landlord Vision</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static', filename='styles.css') }}">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  </head>
+  <body class="font-primary">
+    <main>
+      <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="#">Vision</a>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                  <a href="/logout">
+                    <button class="btn btn-light">Logout</button>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <h1>NexEstate</h1>
+      
+      <!-- Main Start -->
+      <div class="container-fluid mt-4">
+        <div class="row">
+          <div class="col-sm-1">
+            <button class="container-fluid btn btn-primary" 
+            id="createBtn"
+            class="btn btn-light"
+            data-bs-toggle="modal"
+            data-bs-target="#createModal">+ Create</button>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="modal fade font-poppins"
+        id="createModal"
+        tabindex="-1"
+        aria-labelledby="createModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="createModalLabel">Create Item</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body" onload="loadSection('propertiesNav')">
+              <nav class="nav nav-pills flex-column flex-sm-row">
+                <a class="flex-sm-fill text-sm-center nav-link active" id="propertyNavLabel" onclick="loadSection('propertiesNav')" href="#">Property</a>
+                <a class="flex-sm-fill text-sm-center nav-link" id="incomeNavLabel" href="#" onclick="loadSection('incomeNav')">Income</a>
+                <a class="flex-sm-fill text-sm-center nav-link" id="expensesNavLabel" href="#" onclick="loadSection('expensesNav')">Expenses</a>
+              </nav>
+              <hr>
+              <div class="container" id="propertiesNav" style="display: none;">
+                <form id="propertyForm">
+                  <div class="row m-2">
+                    <label class="form-label" for="name">Property Name:</label>
+                    <input class="form-control" type="text" id="name" name="name" required>
+                  </div>
+                  <div class="row m-2">
+                    <label class="form-label" for="value">Property Value:</label>
+                    <input class="form-control" type="number" id="value" name="value" required>
+                  </div>
+                  <div class="row m-2">
+                    <label class="form-label" for="unit">Property/Unit Type:</label>
+                    <input class="form-control" type="text" id="unit" name="unit" required>
+                  </div>
+                  <div class="row m-4">
+                    <button class="btn btn-primary" type="submit">Add Property</button>
+                  </div>
+                </form>
+              </div>
+              <div class="container" id="incomeNav" style="display: none;">
+                <form id="incomeForm">
+                  <div class="row m-2">
+                    <label class="form-label" for="name">Property Name:</label>
+                    <input class="form-control" type="text" id="name" name="name" required>
+                  </div>
+                  <div class="row m-2">
+                    <label class="form-label" for="value">Property Value:</label>
+                    <input class="form-control" type="number" id="value" name="value" required>
+                  </div>
+                  <div class="row m-2">
+                    <label class="form-label" for="unit">Property/Unit Type:</label>
+                    <input class="form-control" type="text" id="unit" name="unit" required>
+                  </div>
+                  <div class="row m-4">
+                    <button class="btn btn-primary" type="submit">Add Property</button>
+                  </div>
+                </form>
+              </div>
+              <div class="container" id="expensesNav" style="display: none;">
+                <form id="expensesForm">
+                  <div class="row m-2">
+                    <label class="form-label" for="name">Property Name:</label>
+                    <input class="form-control" type="text" id="name" name="name" required>
+                  </div>
+                  <div class="row m-2">
+                    <label class="form-label" for="value">Property Value:</label>
+                    <input class="form-control" type="number" id="value" name="value" required>
+                  </div>
+                  <div class="row m-2">
+                    <label class="form-label" for="unit">Property/Unit Type:</label>
+                    <input class="form-control" type="text" id="unit" name="unit" required>
+                  </div>
+                  <div class="row m-4">
+                    <button class="btn btn-primary" type="submit">Add Property</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script src="dashboard.js"></script>
+    <!-- Bootstrap JS (CDN) and Popper.js (required for Bootstrap's components) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+  </body>
+</html>

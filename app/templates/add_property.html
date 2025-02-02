@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Property</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            max-width: 400px;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            text-align: center;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            width: 100%;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #message {
+            margin-top: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Add Property</h2>
+
+    <form id="propertyForm">
+        <label for="name">Property Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="value">Property Value ($):</label>
+        <input type="number" id="value" name="value" required>
+        
+        <label for="unit">Property/Unit Type:</label>
+        <input type="text" id="unit" name="unit" required>
+
+        <button type="submit">Add Property</button>
+    </form>
+
+    <p id="message"></p>
+
+    <script>
+        document.getElementById("propertyForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            let name = document.getElementById("name").value;
+            let value = document.getElementById("value").value;
+            let unit = document.getElementById("unit").value;
+
+            let response = await fetch("/api/add_property", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ name, value, unit })
+            });
+
+            let result = await response.json();
+            document.getElementById("message").textContent = result.message;
+
+            if (response.ok) {
+                document.getElementById("propertyForm").reset();
+            }
+        });
+    </script>
+
+</body>
+</html>
