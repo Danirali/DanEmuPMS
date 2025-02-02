@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List of Income</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            max-width: 800px;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>List of Income</h2>
+
+    <table id="incomesTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Amount ($)</th>
+                <th>Date</th>
+                <th>Property ID</th>
+                <th>Comments</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- incomes will be populated here -->
+        </tbody>
+    </table>
+
+    <script>
+        async function fetchIncomes() {
+            try {
+                const response = await fetch('/api/income');
+                const incomes = await response.json();
+                const tableBody = document.querySelector('#incomesTable tbody');
+                tableBody.innerHTML = '';
+
+                incomes.forEach(income => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${income.name}</td>
+                        <td>${income.amount}</td>
+                        <td>${income.date}</td>
+                        <td>${income.property_id}</td>
+                        <td>${income.extra}</td>
+                        <td><button onclick="deleteincome(${income.id})">Delete</button></td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Error fetching incomes:", error);
+                alert("Could not load incomes. Please try again later.");
+            }
+        }
+
+        async function deleteincome(incomeId) {
+            if (!confirm("Are you sure you want to delete this income?")) return;
+
+            try {
+                const response = await fetch(`/api/remove_income/${incomeId}`, {
+                    method: 'DELETE'
+                });
+
+                const result = await response.json();
+                alert(result.message);
+
+                if (response.ok) fetchIncomes();
+            } catch (error) {
+                console.error("Error deleting income:", error);
+                alert("Could not delete income.");
+            }
+        }
+
+        // Load incomes when the page loads
+        fetchIncomes();
+    </script>
+
+</body>
+</html>
