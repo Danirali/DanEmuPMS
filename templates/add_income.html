@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Income</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            max-width: 400px;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            text-align: center;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            width: 100%;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #message {
+            margin-top: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Add Income</h2>
+
+    <form id="incomeForm">
+        <label for="name">Income Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="amount">Amount (£):</label>
+        <input type="number" id="amount" name="amount" required>
+
+        <label for="date">Date:</label>
+        <input id="date" type="date" name="date" required>
+        </input>
+
+        <label for="property_id">Select Property:</label>
+        <select id="property_id" name="property_id" required>
+            <option value="">Loading properties...</option>
+        </select>
+
+        <label for="extra">Extra Comments (Tenant Name):</label>
+        <input type="text" id="extra" name="extra">
+        </input>
+
+        <button type="submit">Add Income</button>
+    </form>
+
+    <p id="message"></p>
+
+    <script>
+        document.getElementById("incomeForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            let name = document.getElementById("name").value;
+            let amount = document.getElementById("amount").value;
+            let date = document.getElementById("date").value;
+            let property_id = document.getElementById("property_id").value;
+            let extra = document.getElementById("extra").value;
+
+            let response = await fetch("/api/add_income", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, amount, date, property_id, extra })
+            });
+
+            let result = await response.json();
+            document.getElementById("message").textContent = result.message;
+
+            if (response.ok) {
+                document.getElementById("incomeForm").reset();
+            }
+        });  
+        async function fetchProperties() {
+            let response = await fetch("/api/properties");  // Fetch properties from backend
+            let properties = await response.json();
+            let propertyDropdown = document.getElementById("property_id");
+
+            // Clear existing options
+            propertyDropdown.innerHTML = '<option value="">Select a Property</option>';
+
+            // Populate dropdown with property names but store their IDs
+            properties.forEach(property => {
+                let option = document.createElement("option");
+                option.value = property.id;  // Set the property ID as the value
+                option.textContent = property.name;  // Show the property name
+                propertyDropdown.appendChild(option);
+            });
+        }
+
+        // Fetch properties when the page loads
+        document.addEventListener("DOMContentLoaded", fetchProperties);
+        </script>
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List of Properties</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            max-width: 900px;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>List of Properties</h2>
+
+    <table id="propertyTable">
+        <thead>
+            <tr>
+                <th>Property ID</th>
+                <th>Name</th>
+                <th>Value (£)</th>
+                <th>Total Expenses (£)</th>
+                <th>Total Income (£)</th>
+                <th>Net (£)</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Properties will be populated here -->
+        </tbody>
+    </table>
+
+    <script>
+        async function fetchData() {
+            try {
+                const [propertiesRes, expensesRes, incomeRes] = await Promise.all([
+                    fetch('/api/properties'),
+                    fetch('/api/expenses'),
+                    fetch('/api/income')
+                ]);
+
+                const properties = await propertiesRes.json();
+                const expenses = await expensesRes.json();
+                const incomes = await incomeRes.json();
+
+                const tableBody = document.querySelector('#propertyTable tbody');
+                tableBody.innerHTML = '';
+
+                properties.forEach(property => {
+                    const totalExpenses = expenses
+                        .filter(exp => exp.property_id === property.id)
+                        .reduce((sum, exp) => sum + exp.amount, 0);
+
+                    const totalIncome = incomes
+                        .filter(inc => inc.property_id === property.id)
+                        .reduce((sum, inc) => sum + inc.amount, 0);
+
+                    const netIncome = totalIncome - totalExpenses;
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${property.id}</td>
+                        <td>${property.name}</td>
+                        <td>£${property.value.toFixed(2)}</td>
+                        <td>£${totalExpenses.toFixed(2)}</td>
+                        <td>£${totalIncome.toFixed(2)}</td>
+                        <td>£${netIncome.toFixed(2)}</td>
+                        <td><button class="delete-btn" onclick="deleteProperty(${property.id})">Delete</button></td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+
+        async function deleteProperty(propertyId) {
+            if (!confirm("Are you sure you want to delete this property?")) return;
+            
+            const response = await fetch(`/api/remove_property/${propertyId}`, {
+                method: 'DELETE'
+            });
+
+            const result = await response.json();
+            alert(result.message);
+            if (response.ok) fetchData(); // Refresh the list after deletion
+        }
+
+        // Load data when the page loads
+        fetchData();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+bcrypt
+blinker
+flask
+flask-cors
+flask-sqlalchemy
+pyodbc

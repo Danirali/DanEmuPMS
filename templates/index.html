@@ -40,26 +40,30 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/"
-                  >Features</a
+                <a class="nav-link" href="/properties/add"
+                  >Add Properties</a
                 >
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/pricing">Pricing</a>
+                <a class="nav-link" href="/properties/delete">Delete Properties</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/about">About</a>
+                <a class="nav-link" href="/api/properties">All Properties</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/contact">Support</a>
+                <a class="nav-link" href="/expenses/add">Add Expense</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/expenses">View Expenses</a>
               </li>
               <li class="nav-item">
                 <button
+                  id="loginBtn"
                   class="btn btn-light"
                   data-bs-toggle="modal"
                   data-bs-target="#loginModal"
                 >
-                  Login
+                  Login<a id="loginBtnText"></a>
                 </button>
               </li>
             </ul>
