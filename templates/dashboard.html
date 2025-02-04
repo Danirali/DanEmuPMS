@@ -40,8 +40,12 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-1">
-          <button class="container-fluid btn btn-primary" id="createBtn" class="btn btn-light" data-bs-toggle="modal"
+          <button style="font-family: 'Poppins';" class="container-fluid btn btn-primary" id="createBtn" class="btn btn-light" data-bs-toggle="modal"
             data-bs-target="#createModal">+ Create</button>
+        </div>
+        <div class="col-sm-1">
+          <button style="font-family: 'Poppins';" class="container-fluid btn btn-primary" id="viewBtn" class="btn btn-light" data-bs-toggle="modal"
+            data-bs-target="#viewModal">Manage</button>
         </div>
       </div>
     </div>
@@ -87,7 +91,7 @@
               <form id="incomeForm">
                 <div class="row m-2">
                   <label class="form-label" for="name">Name:</label>
-                  <input class="form-control" type="text" id="incomeName" name="name" required>
+                  <input onclick="fetchProperties('income_property_id')" class="form-control" type="text" id="incomeName" name="name" required>
                 </div>
                 <div class="row m-2">
                   <label class="form-label" for="amount">Amount:</label>
@@ -99,7 +103,7 @@
                 </div>
                 <div class="row m-2">
                   <label class="form-label" for="property_id">Select Property:</label>
-                  <select onselect="" onclick="" class="form-select" id="income_property_id" name="property_id"
+                  <select class="form-select" id="income_property_id" name="property_id"
                     required>
                     <option value="">Loading properties...</option>
                   </select>
@@ -127,7 +131,7 @@
               <form id="expenseForm">
                 <div class="row m-2">
                   <label class="form-label" for="name">Name:</label>
-                  <input class="form-control" type="text" id="expenseName" name="name" required>
+                  <input onclick="fetchProperties('expense_property_id')" class="form-control" type="text" id="expenseName" name="name" required>
                 </div>
                 <div class="row m-2">
                   <label class="form-label" for="amount">Amount:</label>
@@ -174,10 +178,83 @@
         </div>
       </div>
     </div>
+    <!-- View Modal -->
+    <div class="modal fade font-poppins" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="viewModalLabel">Edit Items</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" onload="loadSection('viewPropertyNav')">
+            <nav class="nav nav-pills flex-column flex-sm-row">
+              <a class="flex-sm-fill text-sm-center nav-link active" id="viewPropertyNavLabel"
+                onclick="loadSection('viewPropertyNav')" href="#">Property</a>
+              <a class="flex-sm-fill text-sm-center nav-link" id="viewIncomeNavLabel" href="#"
+                onclick="loadSection('viewIncomeNav')">Income</a>
+              <a class="flex-sm-fill text-sm-center nav-link" id="viewExpensesNavLabel" href="#"
+                onclick="loadSection('viewExpensesNav')">Expenses</a>
+            </nav>
+            <hr>
+            <div class="container" id="viewPropertyNav" style="display: none;">
+              <table id="propertiesTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Value</th>
+                        <th>Unit Type</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            </div>
+            <div class="container" id="viewIncomeNav" style="display: none;">
+              <table id="incomesTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Comments</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            </div>
+            <div class="container" id="viewExpensesNav" style="display: none;">
+              <table id="expensesTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Amount</th>
+                        <th>Comments</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="container-fluid">
       <div class="row m-4">
         <div class="col-md-4 rounded border">
-          <div id="netIncome_donut" class="container-fluid"></div>
+          <div id="netIncome_donut"></div>
+          <div id="no_data-netIncome_donut" class="text-danger" style="z-index: 0;">NO DATA</div>
+        </div>
+        <div class="col rounded"></div>
+        <div class="col-md-7 rounded border">
+          <h1 class="text-center">Properties</h1>
+          <h3 class="text-center" id="propertiesCount"></h3>
+          <div class="text-danger" id="propertiesCount_no-data" style="z-index: 0;">NO DATA</div>
         </div>
       </div>
     </div>
@@ -215,6 +292,7 @@
 
       var chart = new google.visualization.PieChart(document.getElementById('netIncome_donut'));
       chart.draw(chartData, options);
+      document.getElementById('no_data-netIncome_donut').style.display = 'none';
     }</script>
 </body>
 
