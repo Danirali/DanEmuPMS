@@ -109,24 +109,22 @@ def get_expenses():
 @login_required
 def add_expense():
   data = request.json
-  print("Received Data:", data)
-
-  name = data.get('name')
-  amount = data.get('amount')
-  category = data.get('category')
-  property_id = data.get('property_id')
-  extra = data.get('extra')
 
   # Check for missing data
-  if not name or amount is None or not category or property_id is None:
-    return jsonify({"message": "Missing data"}), 400
+  if 'name' not in data or 'amount' not in data or 'category' not in data:
+    return jsonify({"message": "Missing data"},{"data":[data]}), 400
+
+  property_id = data.get('property_id')  # Should be a single ID, not a list
+  extra = data.get('extra', None)  # Optional field
 
   # Create the new expense
-  new_expense = Expense(name=name,
-                        amount=amount,
-                        category=category,
-                        property_id=property_id,
-                        extra=extra)
+  new_expense = Expense(
+      name=data['name'],
+      amount=float(data['amount']),  # Ensure it's a float
+      category=data['category'],
+      property_id=int(property_id),  # Ensure it's an integer
+      extra=extra if isinstance(extra, str) else None  # Convert only if it's a string
+  )
   db.session.add(new_expense)
   db.session.commit()
 
@@ -144,6 +142,17 @@ def remove_expense(expense_id):
   db.session.commit()
 
   return jsonify({"message": "Expense removed successfully!"})
+
+@app.route("/api/expenses/categories")
+def expense_categories():
+    categories = db.session.query(
+        Expense.category, db.func.sum(Expense.amount)
+    ).group_by(Expense.category).all()
+
+    category_data = [{"name": cat[0], "amount": cat[1]} for cat in categories]
+
+    return jsonify({"categories": category_data})
+
 
 
 # API Route for properties
@@ -165,7 +174,7 @@ def add_property():
   data = request.json
 
   if 'name' not in data or 'value' not in data or 'unit' not in data:
-    return jsonify({"message": "Missing data"}), 400
+    return jsonify({"message": "Missing data"},{"data":[data]}), 400
 
   new_property = Property(name=data['name'],
                           value=data['value'],
@@ -203,32 +212,24 @@ def get_income():
   } for income in incomes])
 
 # API Route for adding income
-@app.route('/api/add_income', methods=['POST'])
+@app.route('/api/income/add', methods=['POST'])
 @login_required
 def add_income():
   data = request.json
-  print("Received Data:", data)
 
-  name = data.get('name')
-  amount = data.get('amount')
-  date_str = data.get('date')
-  property_id = data.get('property_id')
-  extra = data.get('extra')
-
-  # Check for missing data
-  if not name or amount is None or not date_str:
-    return jsonify({"message": "Missing data"}), 400
+  if 'name' not in data or 'amount' not in data or 'property_id' not in data:
+    return jsonify({"message": "Missing data"},{"data":[data]}), 400
 
   try:
-    date_obj = datetime.strptime(date_str, "%Y-%m-%d")
+    date_obj = datetime.strptime(data['date'], "%Y-%m-%d")
   except ValueError:
     return jsonify({"message": "Invalid date format. Use YYYY-MM-DD"}), 400
 
-  new_income = Income(name=name,
-                      amount=amount,
+  new_income = Income(name=data['name'],
+                      amount=data['amount'],
                       date=date_obj,
-                      property_id=property_id,
-                      extra=extra)
+                      property_id=data['property_id'],
+                      extra=data['extra'])
   db.session.add(new_income)
   db.session.commit()
 
@@ -240,14 +241,20 @@ def remove_income(income_id):
   income_to_delete = Income.query.get(income_id)
 
   if not income_to_delete:
-    return jsonify({"message": "Expense not found"}), 404
+    return jsonify({"message": "Income not found"}), 404
 
   db.session.delete(income_to_delete)
   db.session.commit()
 
-  return jsonify({"message": "Expense removed successfully!"})
+  return jsonify({"message": "Income removed successfully!"})
 
+@app.route("/api/income/net")
+def net_income():
+    incomes = db.session.query(db.func.sum(Income.amount)).scalar()	
+    expenses = db.session.query(db.func.sum(Expense.amount)).scalar()	
+    net_income = incomes - expenses
 
+    return jsonify({"income": incomes, "expenses": expenses, "net_income": net_income})
 
 
 @app.route('/')
@@ -306,9 +313,9 @@ def about_ui():
 
 
 @app.route('/dashboard')
-@login_required  # Protect the dashboard route
 def dashboard():
-  return render_template('dashboard.html')
+    properties = Property.query.all()  # Fetch properties from the database
+    return render_template('dashboard.html', properties=properties)
 
 @app.route('/expenses/add', methods=['GET'])
 @login_required

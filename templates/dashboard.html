@@ -1,65 +1,29 @@
 <!DOCTYPE HTML>
 <html lang="en-GB">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard - Landlord Vision</title>
-    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static', filename='styles.css') }}">
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-  </head>
-  <body class="font-primary">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - NexEstate</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+</head>
+
+<body class="font-primary">
+  <main>
     <header>
       <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">Vision</a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
+          <a class="navbar-brand" href="/">NexEstate</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-              <li class="nav-item">
-                <a class="nav-link" href="/expenses"
-                  >Expenses</a
-                >
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/income"
-                  >Income</a
-                >
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/expenses/add"
-                  >Add Expenses</a
-                >
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/income/add"
-                  >Add Income</a
-                >
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/properties">Property Overview</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/api">API Status</a>
-              </li>
               <li class="nav-item">
                 <a href="/logout">
                   <button class="btn btn-light">Logout</button>
@@ -70,8 +34,330 @@
         </div>
       </nav>
     </header>
-    <!-- Bootstrap JS (CDN) and Popper.js (required for Bootstrap's components) -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
-  </body>
+    <div class="mb-3">.</div>
+
+    <!-- Main Start -->
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-1">
+          <button style="font-family: 'Poppins';" class="container-fluid btn btn-primary" id="createBtn"
+            class="btn btn-light" data-bs-toggle="modal" data-bs-target="#createModal">+ Create</button>
+        </div>
+        <div class="col-sm-1">
+          <button style="font-family: 'Poppins';" class="container-fluid btn btn-primary" id="viewBtn"
+            class="btn btn-light" data-bs-toggle="modal" data-bs-target="#viewModal">Manage</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade font-poppins" id="createModal" tabindex="-1" aria-labelledby="createModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="createModalLabel">Create Item</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" onload="loadSection('propertyNav')">
+            <nav class="nav nav-pills flex-column flex-sm-row">
+              <a class="flex-sm-fill text-sm-center nav-link active" id="propertyNavLabel"
+                onclick="loadSection('propertyNav')" href="#">Property</a>
+              <a class="flex-sm-fill text-sm-center nav-link" id="incomeNavLabel" href="#"
+                onclick="loadSection('incomeNav')">Income</a>
+              <a class="flex-sm-fill text-sm-center nav-link" id="expensesNavLabel" href="#"
+                onclick="loadSection('expensesNav')">Expenses</a>
+            </nav>
+            <hr>
+            <div class="container" id="propertyNav" style="display: none;">
+              <form id="propertyForm">
+                <div class="row m-2">
+                  <label class="form-label" for="name">Name:</label>
+                  <input class="form-control" type="text" id="name" name="name" required>
+                </div>
+                <div class="row m-2">
+                  <label class="form-label" for="value">Value:</label>
+                  <input class="form-control" type="number" id="value" name="value" required>
+                </div>
+                <div class="row m-2">
+                  <label class="form-label" for="unit">Unit Type:</label>
+                  <select class="form-select" id="unit" name="unit" required>
+                    <option value="Flat">Flat</option>
+                    <option value="Apartment">Apartment</option>
+                    <option value="Detached House">Detached House</option>
+                    <option value="Semi-Detached House">Semi-Detached House</option>
+                    <option value="Bungalow">Bungalow</option>
+                    <option value="Terraced House">Terraced House</option>
+                    <option value="Commercial">Commercial</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div class="row m-2 mt-4">
+                  <button class="btn btn-primary" type="submit" id="propertySubmitBtn">Add Property</button>
+                </div>
+              </form>
+            </div>
+            <div class="container" id="incomeNav" style="display: none;">
+              <form id="incomeForm">
+                <div class="row m-2">
+                  <label class="form-label" for="name">Type:</label>
+                  <select class="form-select" id="incomeName" name="name" required>
+                    <option value="Rent">Rent</option>
+                    <option value="Sales">Sales</option>
+                    <option value="Repayment">Repayment</option>
+                    <option value="Loan Agreement">Loan Agreement</option>
+                  </select>
+                </div>
+                <div class="row m-2">
+                  <label class="form-label" for="amount">Amount:</label>
+                  <input onclick="fetchProperties('income_property_id')" class="form-control" type="number" id="incomeAmount" name="amount" required>
+                </div>
+                <div class="row m-2">
+                  <label class="form-label" for="date">Date:</label>
+                  <input class="form-control" type="date" id="income_date" name="date" required>
+                </div>
+                <div class="row m-2">
+                  <label class="form-label" for="property_id">Select Property:</label>
+                  <select class="form-select" id="income_property_id" name="property_id" required>
+                    <option value="">Loading properties...</option>
+                  </select>
+                </div>
+                <div class="row m-2 text-center">
+                  <div class="col-sm">
+                    <a class="btn btn-primary" data-bs-toggle="collapse" href="#extra-info-collapse" role="button"
+                      aria-expanded="false" aria-controls="extra-info-collapse">Extra Options</a>
+                  </div>
+                </div>
+                <div class="collapse" id="extra-info-collapse">
+                  <div class="row m-2">
+                    <label class="form-label" for="extra">Comments:</label>
+                    <input class="form-control" placeholder="Tenant Name/Additional Comments" type="text"
+                      id="income_extra" name="extra">
+                    </input>
+                  </div>
+                </div>
+                <div class="row m-2 mt-4">
+                  <button class="btn btn-primary" type="submit" id="incomeSubmitBtn">Add Income</button>
+                </div>
+              </form>
+            </div>
+            <div class="container" id="expensesNav" style="display: none;">
+              <form id="expenseForm">
+                <div class="row m-2">
+                  <label class="form-label" for="name">Name:</label>
+                  <input onclick="fetchProperties('expense_property_id')" class="form-control" type="text"
+                    id="expenseName" name="name" required>
+                </div>
+                <div class="row m-2">
+                  <label class="form-label" for="amount">Amount:</label>
+                  <input class="form-control" type="number" id="expenseAmount" name="amount" required>
+                </div>
+                <div class="row m-2">
+                  <label class="form-label" for="category">Category:</label>
+                  <select onselect="" onclick="" class="form-select" id="category" name="category" required>
+                    <option value="Maintenance">Maintenance</option>
+                    <option value="Utilities">Utilities</option>
+                    <option value="Insurance">Insurance</option>
+                    <option value="Property Taxes">Property Taxes</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div class="row m-2">
+                  <label class="form-label" for="property_id">Select Property:</label>
+                  <select onselect="" onclick="" class="form-select" id="expense_property_id" name="property_id"
+                    required>
+                    <option value="">Loading properties...</option>
+                  </select>
+                </div>
+                <div class="row m-2 text-center">
+                  <div class="col-sm">
+                    <a class="btn btn-primary" data-bs-toggle="collapse" href="#extra-info-collapse" role="button"
+                      aria-expanded="false" aria-controls="extra-info-collapse">Extra Options</a>
+                  </div>
+                </div>
+                <div class="collapse" id="extra-info-collapse">
+                  <div class="row m-2">
+                    <label class="form-label" for="extra">Comments:</label>
+                    <input class="form-control" placeholder="Tenant Name/Additional Comments" type="text"
+                      id="expense_extra" name="extra">
+                    </input>
+                  </div>
+                </div>
+                <div class="row m-2 mt-4">
+                  <button class="btn btn-primary" type="submit" id="expenseSubmitBtn">Add Expense</button>
+                </div>
+              </form>
+            </div>
+            <p class="m-2" id="formMessage"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- View Modal -->
+    <div class="modal fade font-poppins" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="viewModalLabel">Edit Items</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" onload="loadSection('viewPropertyNav')">
+            <nav class="nav nav-pills flex-column flex-sm-row">
+              <a class="flex-sm-fill text-sm-center nav-link active" id="viewPropertyNavLabel"
+                onclick="loadSection('viewPropertyNav')" href="#">Property</a>
+              <a class="flex-sm-fill text-sm-center nav-link" id="viewIncomeNavLabel" href="#"
+                onclick="loadSection('viewIncomeNav')">Income</a>
+              <a class="flex-sm-fill text-sm-center nav-link" id="viewExpensesNavLabel" href="#"
+                onclick="loadSection('viewExpensesNav')">Expenses</a>
+            </nav>
+            <hr>
+            <div class="container" id="viewPropertyNav" style="display: none;">
+              <table id="propertiesTable">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Value</th>
+                    <th>Unit Type</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+            <div class="container" id="viewIncomeNav" style="display: none;">
+              <table id="incomesTable">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Comments</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+            <div class="container" id="viewExpensesNav" style="display: none;">
+              <table id="expensesTable">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Amount</th>
+                    <th>Comments</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row m-4">
+        <div class="col-md-3 rounded border">
+          <div id="netIncome_donut"></div>
+          <div id="no_data-netIncome_donut" class="text-danger" style="z-index: 0; display: none;">NO DATA</div>
+        </div>
+        <div class="col-sm-1 rounded"></div>
+        <div class="col-sm-2 rounded border">
+          <h1 class="text-center">Properties</h1>
+          <h3 class="text-center" id="propertiesCount"></h3>
+          <div class="text-danger" id="propertiesCount_no-data" style="z-index: 0; display: none;">NO DATA</div>
+        </div>
+        <div class="col-sm-1 rounded"></div>
+        <div class="col-md-4 rounded border">
+          <div id="expenses_donut"></div>
+          <p id="no_data-expenses_donut" class="text-danger" style="display: none;">No data available.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+  <!-- Bootstrap JS (CDN) and Popper.js (required for Bootstrap's components) -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+  <script>google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(fetchExpenseCategoryData);
+    google.charts.setOnLoadCallback(fetchNetIncomeData);
+
+    // 🔹 Fetch and Draw Expense Categories Donut Chart
+    async function fetchExpenseCategoryData() {
+      try {
+        const response = await fetch("/api/expenses/categories");
+        const data = await response.json();
+
+        if (!data.categories || data.categories.length === 0) {
+          document.getElementById('no_data-expenses_donut').style.display = 'block';
+          return;
+        }
+
+        drawExpenseChart(data.categories);
+      } catch (error) {
+        console.error("Error fetching expense category data:", error);
+      }
+    }
+
+    function drawExpenseChart(categories) {
+      let chartData = [['Category', 'Amount']];
+      categories.forEach(category => {
+        chartData.push([category.name, category.amount]);
+      });
+
+      let options = {
+        title: 'Expenses By Category',
+        pieHole: 0.4,
+        legend: { position: 'right' },
+        slices: { 0: { offset: 0.075 } } // Highlights the highest category
+      };
+
+      let chart = new google.visualization.PieChart(document.getElementById('expenses_donut'));
+      chart.draw(google.visualization.arrayToDataTable(chartData), options);
+    }
+
+    // 🔹 Fetch and Draw Net Income Donut Chart
+    async function fetchNetIncomeData() {
+      try {
+        const response = await fetch("/api/income/net");
+        const data = await response.json();
+
+        if (!data.income && !data.expenses) {
+          document.getElementById('no_data-netIncome_donut').style.display = 'block';
+          data.income = {"income":0};
+          data.expenses = {"expenses":0};
+          return;
+        }
+
+        drawNetIncomeChart(data.income, data.expenses);
+      } catch (error) {
+        console.error("Error fetching net income data:", error);
+      }
+    }
+
+    function drawNetIncomeChart(incomes, expenses) {
+      let chartData = google.visualization.arrayToDataTable([
+        ['Category', 'Amount'],
+        ['Income', incomes],
+        ['Expenses', expenses]
+      ]);
+
+      let options = {
+        title: 'Net Income',
+        pieHole: 0.4,
+        legend: { position: 'bottom' }
+      };
+
+      let chart = new google.visualization.PieChart(document.getElementById('netIncome_donut'));
+      chart.draw(chartData, options);
+    }
+  </script>
+</body>
+
 </html>

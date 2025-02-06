@@ -173,3 +173,23 @@ footer {
 .font-primary {
   font-family: 'Bebas Neue', sans-serif;
 }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table, th, td {
+  border: 0.1px solid darkgray;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+}
+
+#expenses_donut:nth-child(0) {
+  width: 100%;
+  width: 100%;
+}
